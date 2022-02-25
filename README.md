@@ -8,7 +8,7 @@ https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-32-bit
 
 **install OS**
 ```
-connect SDcard to card reader 
+connect SD card to card reader 
 select the image
 select destination usb
 click write
@@ -27,6 +27,7 @@ click finish and reboot
 ```
 **configure wifi**
 ```
+sudo raspi-config
 got to system-options -> wireless LAN
 set SSID
 set password
