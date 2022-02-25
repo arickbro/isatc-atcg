@@ -1,0 +1,11 @@
+[Unit]
+Description=Inmarsat-C
+After=network.service
+
+[Service]
+type=simple
+ExecStart=/usr/bin/python3 /home/pi/prod/webserver.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
