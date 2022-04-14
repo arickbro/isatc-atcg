@@ -1,5 +1,6 @@
 import serial
 import sqlite3
+import os
 from isatc_helper import *
 from random import randint
 from email.utils import parseaddr
@@ -190,7 +191,7 @@ class ISATC:
                    
                 self.fetch_info()
                 self.fetch_gps()
-                
+                self.sync_time()
                 
                 return True
         except Exception as e:
@@ -348,7 +349,14 @@ class ISATC:
         self.deviceInfo['longitude'] = singleLine(r"Position\s+:\s+.+[N|S](.+E|W)",string)
         self.deviceInfo['altitude'] = singleLine(r"Altitude\s*:\s+(.+)\s*ft",string)
         self.deviceInfo['GPStime'] = singleLine(r"Position.*at(.*)",string)
-
+    
+    def sync_time(self):
+        string = filterNonPrint(self.write(b"date\n"))
+        if string != None:
+            timeString = singleLine(r"Local date and time is (.*)",string)
+            os.system("date -s \""+timeString+"\"")
+            logging.info("set system date to "+str(timeString))
+         
     def fetch_tx_status(self):
         result = {"error":"","data":{}, "columns":["LES","Sv","P","L","Date","Time","Bytes","Destination","MTCA","Status","File/Ref"]}
         try:
